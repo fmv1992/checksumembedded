@@ -1,0 +1,39 @@
+#! /usr/bin/env bash
+
+# Halt on error.
+set -euxo pipefail
+
+# Go to execution directory.
+cd "$(dirname $(readlink -f "${0}"))"
+
+# Add `man` support.
+sudo apt-get update
+sudo apt-get install -y man manpages-posix
+# For the transposition function.
+sudo apt-get install -y python3
+yes | sudo unminimize || true
+
+# Install our program.
+#
+# This has to come after the setup.
+sudo apt install --yes /opt/deb/*.deb
+mandb
+[[ $(find / -iname 'checksumembedded.1.gz' 2> /dev/null | wc -l) -gt 0 ]]
+
+# Test `--help`.
+bash -xv "$(which checksumembedded)" --help
+
+# Test we fail when we have to fail.
+! bash -xv "$(which checksumembedded)" --help2
+
+# Test the semantics.
+bash -xv "$(which checksumembedded)" --test
+
+# Make sure that the setup is right.
+#
+# Test setup for man pages.
+PAGER=cat man cat
+# Test our man page.
+PAGER=cat man checksumembedded
+
+# vim: set filetype=sh fileformat=unix nowrap:

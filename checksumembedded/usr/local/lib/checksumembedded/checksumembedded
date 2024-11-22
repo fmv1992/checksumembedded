@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+export CHECKSUMEMBEDDED_START_PATTERN='----- ✂ checksumembedded: BEGIN'
+export CHECKSUMEMBEDDED_END_PATTERN='✂ ----- checksumembedded: END'
+
+function main_verify() {
+    local fname="${1}"
+    cat ${fname} \
+        | gawk \
+            --assign checksumembedded_start_pattern="${CHECKSUMEMBEDDED_START_PATTERN}" \
+            --assign checksumembedded_end_pattern="${CHECKSUMEMBEDDED_END_PATTERN}" \
+            --file "${REFERENCE_DIR}/usr/local/lib/checksumembedded/verify.gawk"
+}
+
+# function main_add() {
+# }
+
+# vim: set filetype=sh fileformat=unix nowrap:

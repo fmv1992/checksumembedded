@@ -1,0 +1,39 @@
+{{ disclaimer }}
+# `checksumembedded`
+
+checksumembedded – Verify checksums embedded in text files.
+
+## Man page
+
+`✂ --------------------------------------------------`
+
+{% include 'docs/manpage.md.clean' %}
+
+`-------------------------------------------------- ✂`
+
+## Developing
+
+```
+cd /path/to/checksumembedded
+make down build docker_run
+```
+
+### Testing
+
+```
+cd /path/to/checksumembedded
+rm ./output/deb/*.deb
+make package down build test
+```
+
+## TODO
+
+*   Look for the `???` mark.
+
+### Related projects
+
+*   [`shell_argument_parsing_file`](https://github.com/fmv1992/shell_argument_parsing_file).
+
+<!-- # vim: set filetype=pandoc fileformat=unix nowrap spell spelllang=en: -->
+
+{{ disclaimer }}

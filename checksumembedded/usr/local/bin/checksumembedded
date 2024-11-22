@@ -1,0 +1,52 @@
+#! /usr/bin/env bash
+
+# Halt on error.
+set -euo pipefail
+
+REFERENCE_DIR="${REFERENCE_DIR:-}"
+source ${REFERENCE_DIR}/usr/local/lib/checksumembedded/checksumembedded
+source /usr/local/lib/shell_argument_parsing_file/shell_argument_parsing_file
+
+REC_ENTRYPOINT=${REFERENCE_DIR}/usr/local/share/checksumembedded/recfiles/checksumembedded_entrypoint.rec
+
+declare -A arguments
+
+parse "${REC_ENTRYPOINT}" arguments "${*:-}"
+
+if [[ ${arguments[verbose]:-false} == 'true' ]]; then
+    set -x
+fi
+
+if [[ ${arguments[version]:-false} == 'true' ]]; then
+    # ???
+    exit 1
+fi
+# recsel --collapse --type 'Version' --print-values 'version' -- $metadata_file | sort --version-sort | tail -n 1
+
+if [[ ${arguments[test]:-false} == 'true' ]]; then
+    bash ${REFERENCE_DIR}/usr/local/share/checksumembedded/tests/test_main.sh
+    exit 0
+fi
+
+if [[ ${arguments[help]:-false} == 'true' ]]; then
+    # ???
+    # checksumembedded_help
+    exit 0
+fi
+
+if [[ ${arguments[verify]:-false} == 'true' ]]; then
+    for n in $(seq 0 $((arguments['rest_n'] - 1))); do
+        main_verify $(printf ${arguments["rest${n}"]} | xargs)
+    done
+    exit 0
+fi
+
+if [[ ${arguments[add]:-false} == 'true' ]]; then
+    main_add
+    exit 0
+fi
+
+echo "No options passed." 2>&1
+exit 1
+
+# vim: set filetype=sh fileformat=unix nowrap:

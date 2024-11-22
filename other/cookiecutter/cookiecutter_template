@@ -1,0 +1,52 @@
+#! /usr/bin/env bash
+
+# Halt on error.
+set -euo pipefail
+
+# Go to execution directory.
+{ cd "$(dirname $(readlink -f "${0}"))" && git rev-parse --is-inside-work-tree > /dev/null 2>&1 && cd "$(git rev-parse --show-toplevel)"; } || cd "$(dirname "$(readlink -f ${0})")"
+# Close identation: }
+test -d ./.git
+
+project_name='checksumembedded'
+
+project_name_jinja_pattern='{{ cookiecutter.project_name }}'
+
+curdir=$(pwd)
+
+tempdir="$(mktemp --directory --tmpdir=/tmp/ -- tmp.${project_name}.$(date '+%s').XXXXXX)"
+
+destdir="${tempdir}/{{ cookiecutter.project_name }}"
+cp -rf ${curdir} "${destdir}"
+
+cd "${destdir}/"
+[[ -e ./.git ]]
+rm -rf ./.git
+
+find . -type f -print0 | xargs --verbose --null -- sed --in-place -E "s#[{]#{#g" --
+find . -type f -print0 | xargs --verbose --null -- sed --in-place -E "s#[}]#}#g" --
+
+project_name_escaped="$(echo $project_name | sed -E 's#(.)#[\1]#g')"
+find . -type f | xargs --verbose -- sed --in-place -E "s#${project_name_escaped}#${project_name_jinja_pattern}#g" --
+
+for fname_to_be_changed in $(find . | grep --fixed-strings "${project_name}" | awk '{ print length, $0 }' | sort -r -n -s | cut -d" " -f2-); do
+    new_name=${fname_to_be_changed}
+    left_=${fname_to_be_changed}
+    right_=''
+    while [[ $new_name == $fname_to_be_changed ]]; do
+        part_="$(basename "${left_}")"
+        left_="$(dirname "${left_}")"
+
+        new_right="$(echo "${part_}" | sed -E "s#${project_name}#$project_name_jinja_pattern#g")"
+        right_="${new_right}/${right_}"
+        right_="${right_%/}"
+
+        new_name="${left_}/${right_}"
+    done
+    mv "${fname_to_be_changed}" "${new_name}" || true
+done
+
+cd ..
+pwd
+
+# vim: set filetype=sh fileformat=unix nowrap:
