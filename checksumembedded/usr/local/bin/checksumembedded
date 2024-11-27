@@ -35,10 +35,15 @@ if [[ ${arguments[help]:-false} == 'true' ]]; then
 fi
 
 if [[ ${arguments[verify]:-false} == 'true' ]]; then
+    exit_code=0
     for n in $(seq 0 $((arguments['rest_n'] - 1))); do
-        main_verify $(printf ${arguments["rest${n}"]} | xargs)
+        if main_verify $(printf ${arguments["rest${n}"]} | xargs); then
+            :
+        else
+            exit_code=1
+        fi
     done
-    exit 0
+    exit ${exit_code}
 fi
 
 if [[ ${arguments[add]:-false} == 'true' ]]; then

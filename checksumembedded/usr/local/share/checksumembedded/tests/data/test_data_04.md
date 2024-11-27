@@ -1,5 +1,9 @@
-<!-- Empty string. -->
+<!-- Empty string.
+
+This checksum is actually the one of `\n`, and not of `` (the empty string).
+
+-->
 
 # ----- ✂ checksumembedded: BEGIN
 # ✂ ----- checksumembedded: END
-# checksum: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+# checksum: sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b

@@ -44,6 +44,7 @@ checksumembedded --verify ./data/test_data_02.md
 checksumembedded --verify ./data/test_data_04.md
 checksumembedded --verify ./data/test_data_05.md
 checksumembedded --verify ./data/test_data_06.md
+! checksumembedded --verify ./data/test_data_07.md
 
 if is_docker; then
     :

@@ -1,8 +1,6 @@
-<!-- Multiple good checksums, one bad checksum on the last line.
+<!-- Multiple good checksums, one bad checksum **not** on the last line.
 
-It's also pretty cool that the last line is an actual checksum.
-
-There's a bug caused by this.
+Basically a copy of `test_data_03.md`.
 
 -->
 
@@ -50,8 +48,10 @@ Sed aliquam iaculis leo, quis bibendum risus imperdiet quis. Sed neque eros, ege
 # ✂ ----- checksumembedded: END
 # checksum: sha256:3ad380607cd29639eb6f34704dd162500d9d2285e266c6896369e858a3498e53
 
-<!-- Leave the checksum on the last line. -->
+<!-- **Do not** leave the checksum on the last line. -->
 # ----- ✂ checksumembedded: BEGIN
 checksumembedded
 # ✂ ----- checksumembedded: END
 # checksum: sha256:4ad380607cd29639eb6f34704dd162500d9d2285e266c6896369e858a3498e53
+
+<!-- Comment on the last line. -->

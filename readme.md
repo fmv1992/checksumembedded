@@ -21,7 +21,7 @@ checksumembedded -- Verify checksums embedded in text files.
 
 ### DESCRIPTION
 
-**checksumembedded** verifies the sha256 checksum of a few lines of code:
+**checksumembedded** verifies the sha256 checksum of a few lines of code inside a text file:
 
 ```
 
@@ -36,6 +36,10 @@ print(10)
 This is more text...
 
 ```
+
+The text file may contain more than one block of lines to be checked, for example see [test_data_03.md](https://raw.githubusercontent.com/fmv1992/checksumembedded/aaf5cde2c101233d255e44e501c2c3dbd681840f/checksumembedded/usr/local/share/checksumembedded/tests/data/test_data_03.md).
+
+It provides for an easy way to ensure that a part of your file never changes (e.g. a diff might have its comments changed, but not the diff itself).
 
 ### GENERAL OPTIONS
 
@@ -72,6 +76,8 @@ make package down build test
 ## TODO
 
 *   Look for the `???` mark.
+
+*   Fail on zero matches on a file.
 
 ### Related projects
 

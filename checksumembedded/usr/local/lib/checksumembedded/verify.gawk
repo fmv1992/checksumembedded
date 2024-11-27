@@ -37,7 +37,7 @@ end_is_matching {
     check_line = $0
     pat = "checksum: .*:" sha256_hash
     if (check_line ~ pat) {
-        print"Good verification on line number " NR ":" sha256_hash "."
+        print "Good verification on line number " NR ":" sha256_hash "."
     } else {
         print "Bad verification on line number " NR "."
         should_return_with_error = 1
@@ -45,6 +45,9 @@ end_is_matching {
 }
 
 END {
+    if (should_return_with_error) {
+        exit 1
+    }
 }
 
 
@@ -55,11 +58,11 @@ function get_sha256(lines, index_max)
     # Concatenate array elements with newlines
     for (j = 0; j < index_max; j++) {
         if (j > 0) {
-            data = data ORS	# Add a newline separator
+            data = data ORS
         }
         data = data lines[j]
     }
-    print((data)) |& command
+    print data |& command
     close(command, "to")
     command |& getline result
     close(command)
